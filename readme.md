@@ -28,7 +28,8 @@ While waiting [ticket/40413](https://core.trac.wordpress.org/ticket/40413) merge
 
 ```
 #!php
-<?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} ); ```
+<?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} );
+```
 After merge, you could do :
 ```
 #!php
