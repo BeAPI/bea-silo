@@ -20,7 +20,7 @@ Dev oriented plugin to add silo feature :
 
 // TODO : make composer
 
-# Steps
+# Steps to use
 
 ## Register post type support
 
