@@ -1,10 +1,10 @@
 # BEA - Silo
 
 Dev oriented plugin to add silo feature : 
-*It will use `wp_localize_script` to localize (javascript), depending on some conditions, terms from wanted taxonomies against wanted post type.
-*You can overwrite default term's object to add/remove some values.
-*By default a custom [REST Api](https://bitbucket.org/beapi/bea-silo#markdown-header-rest-api) route is created to ease matching post type and taxonomy silo content.
-*These matching content will be displayed using a _s template located by default into `templates/` folder. But they can be overwrited into theme or child-theme.
+* It will use `wp_localize_script` to localize (javascript), depending on some conditions, terms from wanted taxonomies against wanted post type.
+* You can overwrite default term's object to add/remove some values.
+* By default a custom [REST Api](https://bitbucket.org/beapi/bea-silo#markdown-header-rest-api) route is created to ease matching post type and taxonomy silo content.
+* These matching content will be displayed using a _s template located by default into `templates/` folder. But they can be overwrited into theme or child-theme.
 
 # Installation
 
