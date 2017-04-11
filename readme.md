@@ -25,13 +25,15 @@ Dev oriented plugin to add silo feature :
 ## Register post type support
 
 While waiting [ticket/40413](https://core.trac.wordpress.org/ticket/40413) merge into core, add post type support like this :
+
 ```
 #!php
 <?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} ); ```
 After merge, you could do :
 ```
 #!php
-<?php register_post_type( {post_type}, [ 'supports' => [ 'silo' => [ {taxonomy_1}, {taxonomy_2}, {etc} ] ] ] ); ```
+<?php register_post_type( {post_type}, [ 'supports' => [ 'silo' => [ {taxonomy_1}, {taxonomy_2}, {etc} ] ] ] );
+```
 
 ## Define localize conditions 
 
