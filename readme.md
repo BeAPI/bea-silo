@@ -16,6 +16,10 @@ Dev oriented plugin to add silo feature :
 * Optionally drop the entire `bea-silo` directory into `plugins`.
 * Add into your theme's functions.php file or through a plugin, the expected [Steps](https://bitbucket.org/beapi/bea-silo#markdown-header-steps).
 
+## Composer
+
+// TODO : make composer
+
 # Steps
 
 ## Register post type support
