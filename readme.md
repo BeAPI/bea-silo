@@ -20,22 +20,20 @@ Dev oriented plugin to add silo feature :
 ## Register post type support
 
 While waiting [ticket/40413](https://core.trac.wordpress.org/ticket/40413) merge into core, add post type support like this :
-
-
 ```
 #!php
-<?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} );
-```
-
-
-```#!php <?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} ); ```
+<?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} ); ```
 After merge, you could do :
-```#!php <?php register_post_type( {post_type}, [ 'supports' => [ 'silo' => [ {taxonomy_1}, {taxonomy_2}, {etc} ] ] ] ); ```
+```
+#!php
+<?php register_post_type( {post_type}, [ 'supports' => [ 'silo' => [ {taxonomy_1}, {taxonomy_2}, {etc} ] ] ] ); ```
 
 ## Define localize conditions 
 
 On the hook `bea\silo\localize_terms` you specify where to localize your terms taxonomy for a post type.
-``` #!php <?php
+```
+#!php
+<?php
 /**
  * Check custom conditions to check if to work on current taxonomy against current post type.
  *
@@ -52,7 +50,9 @@ apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type )
 
 ### Example
 
-``` #!php <?php
+```
+#!php
+<?php
 /**
  * Depending on context, add the thematic silo
  *
@@ -73,7 +73,9 @@ add_filter( 'bea\silo\localize_terms', 'bea_where_to_localize_thematic', 10, 3 )
 ## Customize queried terms for the taxonomy
 
 On the hook `bea\silo\term_query\args` you filter the args in order to retrieve the taxonomy's terms. By default `$args` has only `'hide_empty' => false`.
-``` #!php <?php
+```
+#!php 
+<?php
 /**
  * Filter the arguments to retrieve given taxonomy's terms.
  *
@@ -90,7 +92,9 @@ $args = apply_filters( 'bea\silo\term_query\args', $args, $taxonomy );
 ## Customize returned localized terms
 
 On the hook `bea\silo\term_object` you filter the given array to add or remove some values from the current term for the given taxonomy and post type.
-``` #!php <?php
+```
+#!php
+<?php
 /**
  * Filter term object to add / delete some attributes.
  *
@@ -107,7 +111,9 @@ return apply_filters( 'bea\silo\term_object', $new_item, $_term, $_term->taxonom
 
 ### Example
 
-``` #!php <?php
+```
+#!php
+<?php
 /**
  * Add the term's color
  *
