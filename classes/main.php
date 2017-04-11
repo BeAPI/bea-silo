@@ -9,7 +9,17 @@ class Main {
 	use Singleton;
 
 	protected function init() {
+		add_action( 'wp', array( $this, 'register_silo_script' ) );
+		add_action( 'wp_footer', array( $this, 'enqueue_silo_script' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+	}
+
+	public function register_fake_script() {
+		wp_register_script( 'bea-silo', BEA_SILO_DIR . '/assets/js/silo.js', [ 'jquery' ], BEA_SILO_VERSION, true );
+	}
+
+	public function enqueue_silo_script() {
+		wp_enqueue_script( 'bea-silo' );
 	}
 
 	/**
