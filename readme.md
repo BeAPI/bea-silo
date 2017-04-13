@@ -5,7 +5,8 @@ Dev oriented plugin to add silo feature :
 * It will use `wp_localize_script` to localize (javascript), depending on some conditions, terms from wanted taxonomies against wanted post type.
 * You can overwrite default term's object to add/remove some values.
 * By default a custom [REST Api](https://bitbucket.org/beapi/bea-silo#markdown-header-rest-api) route is created to ease matching post type and taxonomy silo content.
-* These matching content will be displayed using a _s template located by default into `templates/` folder. But they can be overwrited into theme or child-theme.
+* These matching content will be displayed using a _s template located by default into `silo/templates/` folder. But they can be overwrited into theme or child-theme.
+* The silo is displayed with an action from the `silo/blocks/` folder. But it can be overwrited into theme or child-theme.
 
 # Installation
 
@@ -143,14 +144,59 @@ function bea_silo_add_color( $new_item, \WP_Term $_term, $_taxonomy ) {
 add_filter( 'bea\silo\term_object', 'bea_silo_add_color', 10, 3 );
 ```
 
+## Display !
+
+On the action `bea\silo\display` you display the wanted silo for the given post types and the taxonomy.
+``` <?php
+/**
+ * Action in purpose to display silo's underscores and html templates depending on the given post types and taxonomy.
+ * Underscore templates :
+ * - button
+ * - results
+ * - no results
+ *
+ * @author Maxime CULEA
+ *
+ * @since 1.0.0
+ *
+ * @param array $post_types : array of wanted post type names
+ * @param string $taxonomy : the taxonomy name
+ */
+do_action( 'bea\silo\display', [ {post_type_1}, {post_type_2} ], [ {taxonomy} ] );
+```
+
+With the matching args, custom templates (_s) and views (html) can be made :
+
+They are loaded in the below order :
+1. Child theme 
+2. Theme
+3. Silo plugin
+
+* _S templates are conditionally loaded :
+    1. silo/templates/{taxonomy}-{template}-tpl.js (1 & 2)
+    2. silo/templates/{template}-tpl.js (1 & 2)
+    3. templates/{template}-tpl.js (3)
+* View :
+    1. silo/blocks/{taxonomy}-silo.php (1 & 2)
+    2. silo/blocks/silo.php (1 & 2)
+    3. blocks/silo.php (3)
+
 # REST Api
 
-// TODO : Finish rest api documentation !
+A REST Api route is automaclly registered to get contents depending on post types and a taxonomy term.
+REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`, where :
+* post_types is an array of post type names to retrieve the content for
+* a silotable taxonomy's term id for the given post types to retrieve the contents for
 
-# Changelog ##
+# Changelog
+
+## 1.0.1 - 13 Apr 2
+* Refactoring.
+* Fix REST Api class.
+* Add display "Blocks" class for _s and view display.
 
 ## 1.0.0 - 11 Apr 2017
 * Refactoring & reformatting.
 * Update readme with usage & example.
 * Add plugin's .pot.
-* Init with boilerplate 2.1.6
+* Init with boilerplate 2.1.6.

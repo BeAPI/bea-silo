@@ -1,7 +1,7 @@
 <?php
 /*
  Plugin Name: BEA - Silo
- Version: 1.0.0
+ Version: 1.0.1
  Version Boilerplate: 2.1.0
  Plugin URI: http://www.beapi.fr
  Description: Add silo feature
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'BEA_SILO_VERSION', '1.0.0' );
+define( 'BEA_SILO_VERSION', '1.0.1' );
 define( 'BEA_SILO_MIN_PHP_VERSION', '5.4' );
 
 // Plugin URL and PATH

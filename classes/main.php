@@ -15,7 +15,7 @@ class Main {
 	}
 
 	public function register_silo_script() {
-		wp_register_script( 'bea-silo', BEA_SILO_URL . '/assets/js/silo.js', [ 'jquery' ], BEA_SILO_VERSION );
+		wp_register_script( 'bea-silo', BEA_SILO_URL . 'assets/js/silo.js', [ 'jquery' ], BEA_SILO_VERSION );
 	}
 
 	public function enqueue_silo_script() {
@@ -38,6 +38,7 @@ class Main {
 		foreach ( $post_types as $post_type => $taxonomies ) {
 			foreach ( $taxonomies as $taxonomy ) {
 				if ( ! empty( $silo[ $taxonomy ] ) ) {
+					// Don't get one more time contents, just add the related post type to it
 					array_push( $silo[ $taxonomy ]['post_types'], $post_type );
 					continue;
 				}
@@ -60,7 +61,7 @@ class Main {
 			return;
 		}
 
-		wp_localize_script( 'scripts', 'bea_silo', array(
+		wp_localize_script( 'bea-silo', 'bea_silo', array(
 			'objects'          => $silo,
 			'read_more_label'  => __( 'Read more', 'bea-silo' ),
 			'no_results_label' => __( 'No results.', 'bea-silo' ),
@@ -233,12 +234,12 @@ class Main {
 	 *
 	 * @author Maxime CULEA
 	 *
-	 * @param $post_types
+	 * @param array $post_types
 	 * @param \WP_Term $term
 	 *
 	 * @return bool
 	 */
-	public static function is_silotable( $post_types, \WP_Term $term ) {
+	public static function is_silotable_term( $post_types, \WP_Term $term ) {
 		if ( empty( $post_types ) || empty( $term ) ) {
 			return false;
 		}
@@ -249,11 +250,40 @@ class Main {
 		}
 
 		foreach ( $post_types as $post_type ) {
-			if ( ! isset( $silo_taxonomies[ $post_type ][ $term->taxonomy ] ) ) {
-				return false;
+			if ( isset( $silo_taxonomies[ $post_type ] ) && in_array( $term->taxonomy, $silo_taxonomies[ $post_type ] ) ) {
+				return true;
 			}
 		}
 
-		return true;
+		return false;
+	}
+
+	/**
+	 * Check if the given taxonomy is silotable for the given post type(s)
+	 *
+	 * @author Maxime CULEA
+	 *
+	 * @param array $post_types
+	 * @param string $taxonomy
+	 *
+	 * @return bool
+	 */
+	public static function is_silotable_taxonomy( $post_types, $taxonomy ) {
+		if ( empty( $post_types ) || empty( $taxonomy ) ) {
+			return false;
+		}
+
+		$silo_taxonomies = self::get_silo_taxonomies();
+		if ( empty( $silo_taxonomies ) ) {
+			return false;
+		}
+
+		foreach ( $post_types as $post_type ) {
+			if ( isset( $silo_taxonomies[ $post_type ] ) && in_array( $taxonomy, $silo_taxonomies[ $post_type ] ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

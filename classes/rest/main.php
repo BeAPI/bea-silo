@@ -37,6 +37,6 @@ class Main {
 	 */
 	public static function get_silo_rest_url() {
 		$controller = new Controller();
-		return rest_url( sprintf( '/%s/%s/', $controller->get_rest_base(), $controller->get_silo_base() ) );
+		return rest_url( sprintf( '/%s/%s/', $controller->get_namespace(), $controller->get_rest_base() ) );
 	}
 }

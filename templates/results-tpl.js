@@ -1,3 +1,4 @@
+<!-- Silo _s results -->
 <script type="text/html" id='results-tpl'>
 	<% _.each(data.posts, function(val,key,list){ %>
 		<div class="item__result tiles__col--4 <% _.each(val.terms_slugs, function(val,key,list){ %><%= val %> <% }) %>">
