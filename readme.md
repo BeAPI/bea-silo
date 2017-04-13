@@ -147,7 +147,9 @@ add_filter( 'bea\silo\term_object', 'bea_silo_add_color', 10, 3 );
 ## Display !
 
 On the action `bea\silo\display` you display the wanted silo for the given post types and the taxonomy.
-``` <?php
+```
+#!php
+<?php
 /**
  * Action in purpose to display silo's underscores and html templates depending on the given post types and taxonomy.
  * Underscore templates :
@@ -185,6 +187,7 @@ They are loaded in the below order :
 
 A REST Api route is automaclly registered to get contents depending on post types and a taxonomy term.
 REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`, where :
+
 * post_types is an array of post type names to retrieve the content for
 * a silotable taxonomy's term id for the given post types to retrieve the contents for
 
