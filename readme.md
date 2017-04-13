@@ -170,6 +170,7 @@ do_action( 'bea\silo\display', [ {post_type_1}, {post_type_2} ], [ {taxonomy} ] 
 With the matching args, custom templates (_s) and views (html) can be made :
 
 They are loaded in the below order :
+
 1. Child theme 
 2. Theme
 3. Silo plugin
@@ -186,6 +187,7 @@ They are loaded in the below order :
 # REST Api
 
 A REST Api route is automaclly registered to get contents depending on post types and a taxonomy term.
+
 REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`, where :
 
 * post_types is an array of post type names to retrieve the content for
