@@ -167,9 +167,7 @@ On the action `bea\silo\display` you display the wanted silo for the given post 
 do_action( 'bea\silo\display', [ {post_type_1}, {post_type_2} ], [ {taxonomy} ] );
 ```
 
-With the matching args, custom templates (_s) and views (html) can be made :
-
-They are loaded in the below order :
+With the matching args, custom templates (_s) and views (html) can be made  and they are loaded in the below order :
 
 1. Child theme 
 2. Theme
