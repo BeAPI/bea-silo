@@ -60,7 +60,7 @@ class Blocks {
 
 			$located = locate_template( $templates, true, false );
 			if ( ! empty( $located ) ) {
-				return;
+				continue;
 			}
 
 			include sprintf( '%s%s/%s', BEA_SILO_DIR, $type, $file_name );
