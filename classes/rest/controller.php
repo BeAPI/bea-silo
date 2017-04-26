@@ -65,11 +65,19 @@ class Controller extends \WP_REST_Controller {
 		 * @author Maxime CULEA
 		 */
 		$contents = new \WP_Query( apply_filters( 'bea\silo\content\args', $args ) );
+		if ( ! $contents->have_posts() ) {
+			new \WP_REST_Response( [
+				'code'    => 'rest_error_silo_content_empty',
+				'message' => __( 'No contents matching arguments.', 'bea-silo' ),
+			] );
+		}
 
-		return new \WP_REST_Response( ! $contents->have_posts() ? [
-			'code'    => 'rest_error_silo_content_empty',
-			'message' => __( 'No contents matching arguments.', 'bea-silo' ),
-		] : $contents->posts, 200 );
+		foreach ( $contents->posts as $post ) {
+			$data    = $this->prepare_item_for_response( (array) $post, $request );
+			$posts[] = $this->prepare_response_for_collection( $data );
+		}
+
+		return rest_ensure_response( $posts );
 	}
 
 	/**
@@ -128,7 +136,7 @@ class Controller extends \WP_REST_Controller {
 	 * @return array
 	 */
 	public function sanitize_array( $param, $request, $key ) {
-		$data = [];
+		$data = [ ];
 		foreach ( $param as $key => $value ) {
 			$data[ absint( $key ) ] = (string) $value;
 		}
@@ -154,5 +162,32 @@ class Controller extends \WP_REST_Controller {
 	 */
 	public function get_rest_base() {
 		return $this->rest_base;
+	}
+
+	/**
+	 * Prepare items for response and adding additional fields
+	 *
+	 * @param mixed $object
+	 * @param \WP_REST_Request $request
+	 *
+	 * @author Maxime CULEA
+	 *
+	 * @return mixed
+	 */
+	public function prepare_item_for_response( $object, $request ) {
+		$GLOBALS['post'] = $object;
+		setup_postdata( $object );
+
+		$additional_fields = $this->get_additional_fields( $object['post_type'] );
+
+		foreach ( $additional_fields as $field_name => $field_options ) {
+			if ( ! $field_options['get_callback'] ) {
+				continue;
+			}
+
+			$object[ $field_name ] = call_user_func( $field_options['get_callback'], $object, $field_name, $request, $object['post_type'] );
+		}
+
+		return $object;
 	}
 }
