@@ -193,7 +193,11 @@ REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`,
 
 # Changelog
 
-## 1.0.1 - 13 Apr 2
+## 1.0.2 - 26 Apr 2017
+# Fix _S templates loading.
+# Fix REST Api additional fields display.
+
+## 1.0.1 - 13 Apr 2017
 * Refactoring.
 * Fix REST Api class.
 * Add display "Blocks" class for _s and view display.
