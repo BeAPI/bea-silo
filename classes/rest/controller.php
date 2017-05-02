@@ -49,9 +49,11 @@ class Controller extends \WP_REST_Controller {
 		$term = \WP_Term::get_instance( (int) $request->get_param( 'term_id' ) );
 		$args = [
 			'post_type'      => (array) $request->get_param( 'post_types' ),
-			'tax_query'      => [
-				'taxonomy' => $term->taxonomy,
-				'terms'    => $term->term_id,
+			'tax_query'      => [ 
+				[
+					'taxonomy' => $term->taxonomy,
+					'terms'    => $term->term_id,
+				],
 
 			],
 			'posts_per_page' => 3,
