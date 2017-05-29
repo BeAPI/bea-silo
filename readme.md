@@ -7,6 +7,7 @@ Dev oriented plugin to add silo feature :
 * By default a custom [REST Api](https://bitbucket.org/beapi/bea-silo#markdown-header-rest-api) route is created to ease matching post type and taxonomy silo content.
 * These matching content will be displayed using a _s template located by default into `silo/templates/` folder. But they can be overwrited into theme or child-theme.
 * The silo is displayed with an action from the `silo/blocks/` folder. But it can be overwrited into theme or child-theme.
+* By default, plugin generate a default silo view into `silo-{taxonomy_name}.php` template.
 
 # Installation
 
@@ -23,6 +24,9 @@ Dev oriented plugin to add silo feature :
 
 # Steps to use
 
+## Special warning
+If using the default taxonomy's silo view. Watch out about SEO with duplicate content.
+
 ## Register post type support
 
 While waiting [ticket/40413](https://core.trac.wordpress.org/ticket/40413) merge into core, add post type support like this :
@@ -38,6 +42,8 @@ After merge, you could do :
 ```
 
 ## Define localize conditions 
+
+### Custom localization
 
 On the hook `bea\silo\localize_terms` you specify where to localize your terms taxonomy for a post type.
 ```
@@ -57,7 +63,7 @@ On the hook `bea\silo\localize_terms` you specify where to localize your terms t
 apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type )
 ```
 
-### Example
+#### Example
 
 ```
 #!php
@@ -78,6 +84,29 @@ function bea_where_to_localize_thematic( $hide_or_display, $taxonomy, $post_type
 }
 add_filter( 'bea\silo\localize_terms', 'bea_where_to_localize_thematic', 10, 3 );
 ```
+
+### Default localization
+
+By default the plugin is generating a default template view for your silos located on : `silo-{taxonomy_name}.php`.
+You Can overwrite this default template by playing withe the following filter : 
+
+```
+#!php
+<?php
+/**
+ * Change the default taxonomy silo slug
+ *
+ * @author Maxime CULEA
+ *
+ * @since 1.1.0
+ *
+ * @param string $slug The taxonomy's default silo slug.
+ * @param string $$taxonomy The taxonomy name working on.
+ */
+return apply_filters( 'BEA\Helpers\taxonomy_silo_slug', sprintf( 'silo-%s', $taxonomy ), $taxonomy );
+```
+
+It is most useful when displaying a silo on homepage - you will be able to come back into deep silo chosen hierarchy. In this case your homepage template and the default one could be the same. So watch out about duplicate content.
 
 ## Customize queried terms for the taxonomy
 
@@ -192,6 +221,9 @@ REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`,
 * a silotable taxonomy's term id for the given post types to retrieve the contents for
 
 # Changelog
+
+## 1.1.0 - 29 Mai 2017
+* Handle a default silo slug and view for a taxonomy.
 
 ## 1.0.2 - 29 Mai 2017
 * For hierarchical taxonomies, construct full term link with ancestors.

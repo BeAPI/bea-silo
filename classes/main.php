@@ -12,6 +12,10 @@ class Main {
 		add_action( 'wp', array( $this, 'register_silo_script' ) );
 		add_action( 'wp_footer', array( $this, 'enqueue_silo_script' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
+
+		add_filter( 'bea\silo\localize_terms', array( $this, 'where_to_localize_terms_by_default' ), PHP_INT_MAX, 3 );
+		add_filter( 'template_include', array( $this, 'template_include_default' ) );
+		add_filter( 'wp_title', array( $this, 'customize_silo_wp_title' ), 10, 3 );
 	}
 
 	public function register_silo_script() {
@@ -53,6 +57,7 @@ class Main {
 					'terms'      => $terms,
 					'post_types' => (array) $post_type,
 					'rest_url'   => esc_url( Rest::get_silo_rest_url() ),
+					'base_slug'  => Helpers::get_taxonomy_silo( $taxonomy ),
 				);
 			}
 		}
@@ -132,21 +137,7 @@ class Main {
 
 		$new_item['has_children'] = $this->has_tax_children( $_term->term_id, $_term->taxonomy );
 		$new_item['level']        = $this->get_tax_level( $_term->term_id, $_term->taxonomy );
-
-		if ( is_taxonomy_hierarchical( $_term->taxonomy ) ) {
-			$ancestors = get_ancestors( $_term->term_id, $_term->taxonomy, 'taxonomy' );
-			if ( ! empty( $ancestors ) ) {
-				// Inverse array to get from highest to lowest ancestor's hierarchy
-				$ancestors             = array_reverse( $ancestors );
-				$new_item['term_link'] = home_url( '/' );
-				foreach ( $ancestors as $ancestor_id ) {
-					$ancestor = get_term( $ancestor_id, $_term->taxonomy );
-					$new_item['term_link'] .= sprintf( '%s/', $ancestor->slug );
-				}
-
-				$new_item['term_link'] .= sprintf( '%s/', $_term->slug );
-			}
-		}
+		$new_item['term_link']    = Helpers::get_term_link( $_term );
 
 		/**
 		 * Filter term object to add / delete some attributes.
@@ -232,7 +223,7 @@ class Main {
 				 * @param string $taxonomy The taxonomy name as context.
 				 * @param string $post_type The Post Type name as context.
 				 */
-				if ( ! apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type ) && ! REST_REQUEST ) {
+				if ( ! apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type ) && ! defined( 'REST_REQUEST' ) && ! REST_REQUEST ) {
 					// If condition(s) not match and not doing rest request
 					continue;
 				}
@@ -300,5 +291,90 @@ class Main {
 		}
 
 		return false;
+	}
+
+	/**
+	 * By default add a rule ( bea-silo-{taxonomy_name} ) for terms localization
+	 *
+	 * @author Maxime CULEA
+	 *
+	 * @param $hide_or_display
+	 * @param $taxonomy
+	 * @param $post_type
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function where_to_localize_terms_by_default( $hide_or_display, $taxonomy, $post_type ) {
+		if ( $hide_or_display ) {
+			return $hide_or_display;
+		}
+
+		return $this->is_current_default_view( $taxonomy );
+	}
+
+	/**
+	 * Check if on a default silo view
+	 * /!\ Ensure the $_SERVER is using REQUEST_URI parameter
+	 *
+	 * @author Maxime CULEA
+	 *
+	 * @param $taxonomy_name
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return bool
+	 */
+	public function is_current_default_view( $taxonomy_name ) {
+		return isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], Helpers::get_taxonomy_silo( $taxonomy_name ) );
+	}
+
+	/**
+	 * Change on the fly the default silo view for a taxonomy
+	 * It uses bea-silo-{taxonomy_name}.php into your theme
+	 *
+	 * @author Maxime CULEA
+	 *
+	 * @param $path
+	 *
+	 * @since 1.1.0
+	 *
+	 * @return string
+	 */
+	public function template_include_default( $path ) {
+		foreach ( self::get_silo_taxonomies() as $pt ) {
+			foreach ( $pt as $tax ) {
+				if ( $this->is_current_default_view( $tax ) ) {
+					$template_path = sprintf( '%s/%s.php', get_template_directory(), Helpers::get_taxonomy_silo( $tax ) );
+					return is_file( $template_path ) ? $template_path : $path;
+				}
+			}
+		}
+
+		return $path;
+	}
+
+	/**
+	 * @author Maxime CULEA
+	 *
+	 * @param $title
+	 * @param $sep
+	 * @param $seplocation
+	 *
+	 * @since 1.1.0
+	 *
+	 * return string
+	 */
+	public function customize_silo_wp_title( $title, $sep, $seplocation ) {
+		foreach ( self::get_silo_taxonomies() as $pt ) {
+			foreach ( $pt as $tax ) {
+				if ( $this->is_current_default_view( $tax ) ) {
+					return sprintf( 'Silo %s %s', $sep, ucfirst( $tax ) );
+				}
+			}
+		}
+
+		return $title;
 	}
 }
