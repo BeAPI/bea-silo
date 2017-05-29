@@ -126,12 +126,27 @@ class Main {
 	 *
 	 * @return array
 	 */
-	private function prepare_item_for_response( $_term ) {
+	private function prepare_item_for_response( \WP_Term $_term ) {
 		// Use magic to_array func
 		$new_item = (array) $_term;
 
 		$new_item['has_children'] = $this->has_tax_children( $_term->term_id, $_term->taxonomy );
 		$new_item['level']        = $this->get_tax_level( $_term->term_id, $_term->taxonomy );
+
+		if ( is_taxonomy_hierarchical( $_term->taxonomy ) ) {
+			$ancestors = get_ancestors( $_term->term_id, $_term->taxonomy, 'taxonomy' );
+			if ( ! empty( $ancestors ) ) {
+				// Inverse array to get from highest to lowest ancestor's hierarchy
+				$ancestors             = array_reverse( $ancestors );
+				$new_item['term_link'] = home_url( '/' );
+				foreach ( $ancestors as $ancestor_id ) {
+					$ancestor = get_term( $ancestor_id, $_term->taxonomy );
+					$new_item['term_link'] .= sprintf( '%s/', $ancestor->slug );
+				}
+
+				$new_item['term_link'] .= sprintf( '%s/', $_term->slug );
+			}
+		}
 
 		/**
 		 * Filter term object to add / delete some attributes.
