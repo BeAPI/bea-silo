@@ -222,6 +222,9 @@ REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`,
 
 # Changelog
 
+## 1.1.1 - 01 June 2017
+* Add some filters.
+
 ## 1.1.0 - 29 Mai 2017
 * Handle a default silo slug and view for a taxonomy.
 
