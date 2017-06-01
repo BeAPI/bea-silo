@@ -54,14 +54,14 @@ class Main {
 				}
 
 				$data = array(
- 					'terms'      => $terms,
- 					'post_types' => (array) $post_type,
- 					'rest_url'   => esc_url( Rest::get_silo_rest_url() ),
+					'terms'      => $terms,
+					'post_types' => (array) $post_type,
+					'rest_url'   => esc_url( Rest::get_silo_rest_url() ),
 					'base_slug'  => Helpers::get_taxonomy_silo( $taxonomy ),
- 				);
+				);
 
 				/**
-				 * Filter the datas for each taxonomy
+				 * Filter the data for each taxonomy
 				 *
 				 * @author Romain DORR
 				 *
@@ -69,6 +69,7 @@ class Main {
 				 *
 				 * @param array $data
 				 * @param string $taxonomy The taxonomy name as context.
+				 * @param string $post_type The post type name as context.
 				 */
 				$silo[ $taxonomy ] = apply_filters( 'bea\silo\taxonomy\data', $data, $taxonomy, $post_type );
 			}
@@ -79,19 +80,19 @@ class Main {
 		}
 
 		$localize = array(
- 			'objects'          => $silo,
- 			'read_more_label'  => __( 'Read more', 'bea-silo' ),
- 			'no_results_label' => __( 'No results.', 'bea-silo' ),
- 		);
+			'objects'          => $silo,
+			'read_more_label'  => __( 'Read more', 'bea-silo' ),
+			'no_results_label' => __( 'No results.', 'bea-silo' ),
+		);
 
 		/**
-		 * Filter localized datas
+		 * Filter localized data
 		 *
 		 * @author Romain DORR
 		 *
 		 * @since 1.1.1
 		 *
-		 * @param array $data
+		 * @param array $localize Data to be localized.
 		 */
 		wp_localize_script( 'bea-silo', 'bea_silo', apply_filters( 'bea\silo\localize_data', $localize ) );
 	}
@@ -370,6 +371,7 @@ class Main {
 			foreach ( $pt as $tax ) {
 				if ( $this->is_current_default_view( $tax ) ) {
 					$template_path = sprintf( '%s/%s.php', get_template_directory(), Helpers::get_taxonomy_silo( $tax ) );
+
 					return is_file( $template_path ) ? $template_path : $path;
 				}
 			}
@@ -387,7 +389,7 @@ class Main {
 	 *
 	 * @since 1.1.0
 	 *
-	 * return string
+	 * @return string
 	 */
 	public function customize_silo_wp_title( $title, $sep, $seplocation ) {
 		foreach ( self::get_silo_taxonomies() as $pt ) {
