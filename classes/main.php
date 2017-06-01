@@ -53,12 +53,24 @@ class Main {
 					continue;
 				}
 
-				$silo[ $taxonomy ] = array(
-					'terms'      => $terms,
-					'post_types' => (array) $post_type,
-					'rest_url'   => esc_url( Rest::get_silo_rest_url() ),
+				$data = array(
+ 					'terms'      => $terms,
+ 					'post_types' => (array) $post_type,
+ 					'rest_url'   => esc_url( Rest::get_silo_rest_url() ),
 					'base_slug'  => Helpers::get_taxonomy_silo( $taxonomy ),
-				);
+ 				);
+
+				/**
+				 * Filter the datas for each taxonomy
+				 *
+				 * @author Romain DORR
+				 *
+				 * @since 1.1.1
+				 *
+				 * @param array $data
+				 * @param string $taxonomy The taxonomy name as context.
+				 */
+				$silo[ $taxonomy ] = apply_filters( 'bea\silo\taxonomy\data', $data, $taxonomy, $post_type );
 			}
 		}
 
@@ -66,11 +78,22 @@ class Main {
 			return;
 		}
 
-		wp_localize_script( 'bea-silo', 'bea_silo', array(
-			'objects'          => $silo,
-			'read_more_label'  => __( 'Read more', 'bea-silo' ),
-			'no_results_label' => __( 'No results.', 'bea-silo' ),
-		) );
+		$localize = array(
+ 			'objects'          => $silo,
+ 			'read_more_label'  => __( 'Read more', 'bea-silo' ),
+ 			'no_results_label' => __( 'No results.', 'bea-silo' ),
+ 		);
+
+		/**
+		 * Filter localized datas
+		 *
+		 * @author Romain DORR
+		 *
+		 * @since 1.1.1
+		 *
+		 * @param array $data
+		 */
+		wp_localize_script( 'bea-silo', 'bea_silo', apply_filters( 'bea\silo\localize_data', $localize ) );
 	}
 
 	/**
