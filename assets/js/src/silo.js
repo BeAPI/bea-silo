@@ -10,11 +10,11 @@ class Silo {
    * @param {bool} scrollable
    * @return {object} silo
    */
-  static bind (selector, scrollable = true) {
+  static bind (selector, opts, scrollable = true) {
     document.querySelectorAll(selector).forEach(el => {
       const preview = el.dataset.preview
       const name = el.dataset.name
-      const silo = new Silo(name, el, preview, scrollable)
+      const silo = new Silo(name, opts, el, preview, scrollable)
       return silo
     })
   }
@@ -26,8 +26,9 @@ class Silo {
    * @param {bool} preview
    * @param {bool} scrollable
    */
-  constructor (name, container, preview = false, scrollable) {
+  constructor (name, opts, container, preview = false, scrollable) {
     this.name = name
+    this.opts = opts
     this.container = container
     this.preview = preview
     this.terms = bea_silo.objects[this.name].terms
@@ -65,7 +66,7 @@ class Silo {
     if (this.scrollable) {
       reverse.forEach((id, index) => {
         if (this.container.querySelector(`.silo__item[data-id="${id}"]`)) {
-          this.container.querySelector(`.silo__item[data-id="${id}"]`).classList.add('active')
+          this.container.querySelector(`.silo__item[data-id="${id}"]`).classList.add(this.opts.activeClass)
         }
         this.displayLevel(index, id)
       })
@@ -73,7 +74,7 @@ class Silo {
       // If Silo is not scrollable, display only last element
       this.displayLevel()
       // add active class on level 1 item
-      this.container.querySelector(`.silo__item[data-id="${reverse[1]}"]`).classList.add('active')
+      this.container.querySelector(`.silo__item[data-id="${reverse[1]}"]`).classList.add(this.opts.activeClass)
       this.displayLevel(reverse.length - 1, reverse[reverse.length - 1])
     }
   }
@@ -93,7 +94,7 @@ class Silo {
       e.preventDefault()
     }
     // If item is already active, remove class and the associate row
-    if (parentNode.classList.contains('active')) {
+    if (parentNode.classList.contains(this.opts.activeClass)) {
       const level = parseInt(parentNode.dataset.level)
       this.removePrevRow(parentNode, level)
       this.handlePrevHistory(parentNode)
@@ -132,8 +133,8 @@ class Silo {
   handleActiveClass (parent) {
     const row = parent.parentNode
     const items = row.querySelectorAll('.silo__item')
-    items.forEach(item => item.classList.remove('active'))
-    parent.classList.add('active')
+    items.forEach(item => item.classList.remove(this.opts.activeClass))
+    parent.classList.add(this.opts.activeClass)
   }
 
   /**
@@ -149,7 +150,7 @@ class Silo {
         row.parentNode.removeChild(row)
       }
     })
-    el.classList.remove('active')
+    el.classList.remove(this.opts.activeClass)
   }
 
   /**
@@ -198,7 +199,9 @@ class Silo {
     // append row in dom
     this.container.appendChild(row)
     if (level !== 0) {
-      fadeIn(row)
+      if (this.opts.animation === 'fadeIn') {
+        fadeIn(row)
+      }
     }
     // if silo is scrollable, smooth scroll to the row
     if (this.scrollable) {
