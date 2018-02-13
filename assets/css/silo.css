@@ -1,0 +1,60 @@
+.silo .silo__row {
+    margin-bottom: 40px
+}
+.silo .silo__row::after {
+    clear: both;
+    content: "";
+    display: table
+}
+.silo .silo__item{
+    width: 200px;
+    height: 200px;
+    margin-bottom: 20px;
+    background-color: #f5745a;
+    text-align: center;
+    -webkit-transition: background-color .4s ease-in-out;
+    transition: background-color .4s ease-in-out;
+    width: 31.91489%;
+    float: left
+}
+.silo .silo__item.active {
+    background-color: #f24b2a
+}
+.silo .silo__item:nth-child(3n+1) {
+    margin-left: 0;
+    margin-right: -100%;
+    clear: both;
+    margin-left: 0
+}
+.silo .silo__item:nth-child(3n+2) {
+    margin-left: 34.04255%;
+    margin-right: -100%;
+    clear: none
+}
+.silo .silo__item:nth-child(3n+3) {
+    margin-left: 68.08511%;
+    margin-right: -100%;
+    clear: none
+}
+.silo .silo__item a {
+    display: block;
+    height: 100%;
+    color: #fff
+}
+.silo .silo__item a > * {
+    pointer-events: none
+}
+.silo .silo__item .item__title {
+    display: inline-block;
+    padding: 20px;
+    position: relative;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 20px
+}
+.silo .silo__item:active, .silo__item:focus, .silo__item:hover {
+    cursor: pointer;
+    background-color: #f24b2a
+}
