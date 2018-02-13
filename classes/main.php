@@ -9,8 +9,9 @@ class Main {
 	use Singleton;
 
 	protected function init() {
-		add_action( 'wp', array( $this, 'register_silo_script' ) );
+		add_action( 'wp', array( $this, 'register_silo_assets' ) );
 		add_action( 'wp_footer', array( $this, 'enqueue_silo_script' ) );
+		add_action( 'wp_head', array ( $this, 'enqueue_silo_style' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		add_filter( 'bea\silo\localize_terms', array( $this, 'where_to_localize_terms_by_default' ), PHP_INT_MAX, 3 );
@@ -18,12 +19,38 @@ class Main {
 		add_filter( 'wp_title', array( $this, 'customize_silo_wp_title' ), 10, 3 );
 	}
 
-	public function register_silo_script() {
-		wp_register_script( 'bea-silo', BEA_SILO_URL . 'assets/js/silo.js', [ 'jquery' ], BEA_SILO_VERSION );
+	/**
+	 * Register silo style and script
+	 *
+	 * @author Romain LEFORT
+	 *
+	 * @version 1.1.2
+	 */
+	public function register_silo_assets() {
+		wp_register_script( 'bea-silo-script', BEA_SILO_URL . 'assets/js/silo.min.js', [ 'jquery' ], BEA_SILO_VERSION );
+		wp_register_style( 'bea-silo-style', BEA_SILO_URL . 'css/silo.css' );
 	}
 
+	/**
+	 * Enqueue silo style
+	 *
+	 * @author Romain LEFORT
+	 *
+	 * @version 1.1.2
+	 */
+	public function enqueue_silo_style() {
+		wp_enqueue_style( 'bea-silo-style' );
+	}
+
+	/**
+	 * Enqueue silo script
+	 *
+	 * @author Romain LEFORT
+	 *
+	 * @version 1.1.2
+	 */
 	public function enqueue_silo_script() {
-		wp_enqueue_script( 'bea-silo' );
+		wp_enqueue_script( 'bea-silo-script' );
 	}
 
 	/**
