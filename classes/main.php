@@ -10,7 +10,6 @@ class Main {
 
 	protected function init() {
 		add_action( 'wp', array( $this, 'register_silo_script' ) );
-		add_action( 'wp_footer', array( $this, 'enqueue_silo_script' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'wp_enqueue_scripts' ) );
 
 		add_filter( 'bea\silo\localize_terms', array( $this, 'where_to_localize_terms_by_default' ), PHP_INT_MAX, 3 );
@@ -20,10 +19,6 @@ class Main {
 
 	public function register_silo_script() {
 		wp_register_script( 'bea-silo', BEA_SILO_URL . 'assets/js/silo.js', [ 'jquery' ], BEA_SILO_VERSION );
-	}
-
-	public function enqueue_silo_script() {
-		wp_enqueue_script( 'bea-silo' );
 	}
 
 	/**
@@ -79,6 +74,7 @@ class Main {
 			return;
 		}
 
+		wp_enqueue_script( 'bea-silo' );
 		$localize = array(
 			'objects'          => $silo,
 			'read_more_label'  => __( 'Read more', 'bea-silo' ),
