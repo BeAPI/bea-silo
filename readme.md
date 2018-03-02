@@ -1,4 +1,4 @@
-# BEA - Silo
+# BEA - Silo (IN DEVELOPMENT)
 
 Dev oriented plugin to add silo feature :
 
@@ -32,12 +32,10 @@ If using the default taxonomy's silo view. Watch out about SEO with duplicate co
 While waiting [ticket/40413](https://core.trac.wordpress.org/ticket/40413) merge into core, add post type support like this :
 
 ```
-#!php
 <?php add_post_type_support( {post_type}, 'silo', {taxonomy_1}, {taxonomy_2}, {etc} );
 ```
 After merge, you could do :
 ```
-#!php
 <?php register_post_type( {post_type}, [ 'supports' => [ 'silo' => [ {taxonomy_1}, {taxonomy_2}, {etc} ] ] ] );
 ```
 
@@ -47,7 +45,6 @@ After merge, you could do :
 
 On the hook `bea\silo\localize_terms` you specify where to localize your terms taxonomy for a post type.
 ```
-#!php
 <?php
 /**
  * Check custom conditions to check if to work on current taxonomy against current post type.
@@ -66,7 +63,6 @@ apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type )
 #### Example
 
 ```
-#!php
 <?php
 /**
  * Depending on context, add the thematic silo
@@ -91,7 +87,6 @@ By default the plugin is generating a default template view for your silos locat
 You Can overwrite this default template by playing withe the following filter : 
 
 ```
-#!php
 <?php
 /**
  * Change the default taxonomy silo slug
@@ -112,7 +107,6 @@ It is most useful when displaying a silo on homepage - you will be able to come 
 
 On the hook `bea\silo\term_query\args` you filter the args in order to retrieve the taxonomy's terms. By default `$args` has only `'hide_empty' => false`.
 ```
-#!php 
 <?php
 /**
  * Filter the arguments to retrieve given taxonomy's terms.
@@ -131,7 +125,6 @@ $args = apply_filters( 'bea\silo\term_query\args', $args, $taxonomy );
 
 On the hook `bea\silo\term_object` you filter the given array to add or remove some values from the current term for the given taxonomy and post type.
 ```
-#!php
 <?php
 /**
  * Filter term object to add / delete some attributes.
@@ -150,7 +143,6 @@ return apply_filters( 'bea\silo\term_object', $new_item, $_term, $_term->taxonom
 ### Example
 
 ```
-#!php
 <?php
 /**
  * Add the term's color
@@ -177,7 +169,6 @@ add_filter( 'bea\silo\term_object', 'bea_silo_add_color', 10, 3 );
 
 On the action `bea\silo\display` you display the wanted silo for the given post types and the taxonomy.
 ```
-#!php
 <?php
 /**
  * Action in purpose to display silo's underscores and html templates depending on the given post types and taxonomy.
