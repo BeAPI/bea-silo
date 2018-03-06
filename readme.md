@@ -20,7 +20,8 @@ Dev oriented plugin to add silo feature :
 
 ## Composer
 
-// TODO : make composer
+* Add repository source : { "type": "vcs", "url": "https://github.com/BeAPI/bea-silo" }.
+* Include "bea/bea-silo": "dev-master" in your composer file for last master's commits or a tag released.
 
 # Steps to use
 
@@ -213,7 +214,12 @@ REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`,
 
 # Changelog
 
-## 1.1.1 - 01 June 2017
+## 1.1.2 - 06 Mar 2018
+* Update items response with childrens
+* Load JS/Script Data on wp_enqueue_script hook
+* Add composer json file
+
+## 1.1.1 - 01 Jun 2017
 * Add some filters.
 
 ## 1.1.0 - 29 Mai 2017
