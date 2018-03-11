@@ -214,6 +214,9 @@ REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`,
 
 # Changelog
 
+## 1.1.3 - 11 Mar 2018
+* Fix items response with childrens
+
 ## 1.1.2 - 06 Mar 2018
 * Update items response with childrens
 * Load JS/Script Data on wp_enqueue_script hook
