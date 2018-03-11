@@ -155,7 +155,7 @@ class Main {
 		// Use magic to_array func
 		$new_item = (array) $_term;
 
-		$new_item['has_children'] = $this->has_tax_children( $_term->term_id, $_term->taxonomy );
+		$new_item['childrens'] = $this->has_tax_children( $_term->term_id, $_term->taxonomy );
 		$new_item['level']        = $this->get_tax_level( $_term->term_id, $_term->taxonomy );
 		$new_item['term_link']    = Helpers::get_term_link( $_term );
 
@@ -195,7 +195,7 @@ class Main {
 	 *
 	 * @author Maxime CULEA
 	 *
-	 * @return bool
+	 * @return array
 	 */
 	private function has_tax_children( $term_id, $tax ) {
 		$child = new \WP_Term_Query( [
@@ -204,7 +204,7 @@ class Main {
 			'fields'   => 'ids',
 		] );
 
-		return ! empty( $child->get_terms() );
+		return empty( $child->get_terms() ) ? [] : $child->get_terms();
 	}
 
 	/**
