@@ -67,6 +67,10 @@ add_action( 'plugins_loaded', 'init_bea_silo_plugin' );
  * Init the plugin
  */
 function init_bea_silo_plugin() {
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		return;
+	}
+
 	BEA\Silo\Main::get_instance();
 	BEA\Silo\Plugin::get_instance();
 	BEA\Silo\Blocks::get_instance();
