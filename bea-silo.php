@@ -1,7 +1,7 @@
 <?php
 /*
  Plugin Name: BEA - Silo
- Version: 1.1.3
+ Version: 1.1.4
  Version Boilerplate: 2.1.0
  Plugin URI: http://www.beapi.fr
  Description: Add silo feature
@@ -12,7 +12,7 @@
  Network: True
  ----
 
- Copyright 2017 BE API Technical team (human@beapi.fr)
+ Copyright 2018 BE API Technical team (human@beapi.fr)
 
  This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'BEA_SILO_VERSION', '1.1.3' );
+define( 'BEA_SILO_VERSION', '1.1.4' );
 define( 'BEA_SILO_MIN_PHP_VERSION', '5.4' );
 
 // Plugin URL and PATH
