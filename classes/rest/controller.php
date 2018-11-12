@@ -14,7 +14,7 @@ class Controller extends \WP_REST_Controller {
 		register_rest_route( $this->namespace, '/' . $this->rest_base, [
 			/**
 			 * Get contents
-			 * AJAX check jQuery.ajax( { url :'https://ipsen.beapi.space/wp-json/bea/silo?post_types[]=post&term_id=4', params : { 'post_types' : [ 'post', 'page' ], term_id : 34 }, method : "GET" });
+			 * AJAX check jQuery.ajax( { url :'https://yourdomain.com/wp-json/bea/silo?post_types[]=post&term_id=4', params : { 'post_types' : [ 'post', 'page' ], term_id : 34 }, method : "GET" });
 			 */
 			[
 				'methods'             => \WP_REST_Server::READABLE,
@@ -92,7 +92,14 @@ class Controller extends \WP_REST_Controller {
 	 */
 	public function get_contents_check( \WP_REST_Request $request ) {
 		$term       = \WP_Term::get_instance( (int) $request->get_param( 'term_id' ) );
+		if ( is_wp_error( $term ) ) {
+			return new \WP_Error( 'rest_error_silo_no_term', __( 'Term is missing.', 'bea-silo' ), [ 'status' => rest_authorization_required_code() ] );
+		}
+
 		$post_types = (array) $request->get_param( 'post_types' );
+		if ( empty( $post_types ) ) {
+			return new \WP_Error( 'rest_error_silo_no_post_types', __( 'Post Types are missing.', 'bea-silo' ), [ 'status' => rest_authorization_required_code() ] );
+		}
 
 		if ( ! Main::is_silotable_term( $post_types, $term ) ) {
 			return new \WP_Error( 'rest_error_silo_content_args', __( 'Given args are not silotable ones.', 'bea-silo' ), [ 'status' => rest_authorization_required_code() ] );
