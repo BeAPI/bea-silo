@@ -20,18 +20,19 @@ class Controller extends \WP_REST_Controller {
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => [ $this, 'get_contents' ],
 				'permission_callback' => [ $this, 'get_contents_check' ],
-				'args'                => [
-					'post_types' => [
-						'validate_callback' => [ $this, 'is_array' ],
-						'sanitize_callback' => [ $this, 'sanitize_array' ],
-						'required'          => true,
-					],
-					'term_id'    => [
-						'validate_callback' => [ $this, 'is_numeric' ],
-						'sanitize_callback' => 'absint',
-						'required'          => true,
-					],
-				],
+				'args'                =>
+					apply_filters( 'bea\silo\register_rest_route\args', [
+						'post_types' => [
+							'validate_callback' => [ $this, 'is_array' ],
+							'sanitize_callback' => [ $this, 'sanitize_array' ],
+							'required'          => true,
+						],
+						'term_id'    => [
+							'validate_callback' => [ $this, 'is_numeric' ],
+							'sanitize_callback' => 'absint',
+							'required'          => true,
+						],
+					] ),
 			],
 		] );
 	}
@@ -65,7 +66,7 @@ class Controller extends \WP_REST_Controller {
 		 *
 		 * @author Maxime CULEA
 		 */
-		$contents = new \WP_Query( apply_filters( 'bea\silo\content\args', $args ) );
+		$contents = new \WP_Query( apply_filters( 'bea\silo\content\args', $args, $request ) );
 		if ( ! $contents->have_posts() ) {
 			new \WP_REST_Response( [
 				'code'    => 'rest_error_silo_content_empty',
