@@ -347,7 +347,13 @@ class Main {
 	 * @return bool
 	 */
 	public function is_current_default_view( $taxonomy_name ) {
-		return isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], Helpers::get_taxonomy_silo( $taxonomy_name ) );
+		$taxonomy_silo = Helpers::get_taxonomy_silo( $taxonomy_name );
+
+		if ( empty( $taxonomy_silo ) ) {
+			return false;
+		}
+
+		return isset( $_SERVER['REQUEST_URI'] ) && false !== strpos( $_SERVER['REQUEST_URI'], $taxonomy_silo );
 	}
 
 	/**
