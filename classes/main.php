@@ -243,7 +243,7 @@ class Main {
 				 * @param string $taxonomy The taxonomy name as context.
 				 * @param string $post_type The Post Type name as context.
 				 */
-				if ( ! apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type ) && wp_is_serving_rest_request() ) {
+				if ( ! apply_filters( 'bea\silo\localize_terms', false, $taxonomy, $post_type ) && ! wp_is_serving_rest_request() ) {
 					// If condition(s) not match and not doing rest request
 					continue;
 				}
