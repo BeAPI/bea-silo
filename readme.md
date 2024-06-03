@@ -214,6 +214,9 @@ REST Api route looks like `{ndd}/wp-json/bea/silo?post_types[0]=post&term_id=4`,
 
 # Changelog
 
+## 1.1.7 - 31 May 2024
+* Fix compatibility bug on REST_REQUEST
+
 ## 1.1.6 - 12 May 2022
 * Handle empty taxonomy silo case
 

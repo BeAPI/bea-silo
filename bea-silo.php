@@ -9,6 +9,9 @@
  Author URI: http://www.beapi.fr
  Domain Path: languages
  Text Domain: bea-silo
+ Requires at least: 6.5
+ Tested up to: 6.5.3
+ Requires PHP: 7.0
  Network: True
  ----
 
@@ -39,8 +42,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Plugin constants
-define( 'BEA_SILO_VERSION', '1.1.6' );
-define( 'BEA_SILO_MIN_PHP_VERSION', '5.4' );
+define( 'BEA_SILO_VERSION', '1.1.7' );
+define( 'BEA_SILO_MIN_PHP_VERSION', '7.0' );
 
 // Plugin URL and PATH
 define( 'BEA_SILO_URL', plugin_dir_url( __FILE__ ) );
