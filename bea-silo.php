@@ -1,7 +1,7 @@
 <?php
 /*
  Plugin Name: BEA - Silo
- Version: 1.1.6
+ Version: 1.1.7
  Version Boilerplate: 2.1.0
  Plugin URI: http://www.beapi.fr
  Description: Add silo feature
